@@ -5,22 +5,29 @@ let database = [
   {
     id: '1',
     icon: 'laptop',
-    name: 'Dashboard',
+    name: '我的工作台',
     route: '/dashboard',
   },
   {
     id: '2',
     bpid: '1',
-    name: 'Users',
+    name: '用户管理',
     icon: 'user',
     route: '/user',
   },
   {
     id: '7',
     bpid: '1',
-    name: 'Posts',
+    name: '角色管理',
     icon: 'shopping-cart',
     route: '/post',
+  },
+  {
+    id: '9',
+    bpid: '1',
+    name: 'demo',
+    icon: 'shopping-cart',
+    route: '/demo',
   },
   {
     id: '21',
@@ -39,7 +46,7 @@ let database = [
   {
     id: '4',
     bpid: '1',
-    name: 'UI Element',
+    name: 'UI组件库',
     icon: 'camera-o',
   },
   {
