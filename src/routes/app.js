@@ -72,35 +72,35 @@ const App = ({ children, dispatch, app, loading, location }) => {
   if (openPages && openPages.includes(pathname)) {
     return (<div>
       <Loader spinning={loading.effects['app/query']} />
-      {children}
-    </div>)
+    {children}
+  </div>)
   }
   return (
     <div>
-      <Helmet>
-        <title>ANTD ADMIN</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href={logo} type="image/x-icon" />
-        {iconFontJS && <script src={iconFontJS}></script>}
-        {iconFontCSS && <link rel="stylesheet" href={iconFontCSS} />}
-      </Helmet>
-      <div className={classnames(styles.layout, { [styles.fold]: isNavbar ? false : siderFold }, { [styles.withnavbar]: isNavbar })}>
-        {!isNavbar ? <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
-          <Sider {...siderProps} />
-        </aside> : ''}
-        <div className={styles.main}>
-          <Header {...headerProps} />
-          <Bread {...breadProps} />
-          <div className={styles.container}>
-            <div className={styles.content}>
-              {hasPermission ? children : <Error />}
-            </div>
-          </div>
-          <Footer />
-        </div>
-      </div>
-    </div>
-  )
+    <Helmet>
+    <title>东信管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href={logo} type="image/x-icon" />
+    {iconFontJS && <script src={iconFontJS}></script>}
+  {iconFontCSS && <link rel="stylesheet" href={iconFontCSS} />}
+</Helmet>
+  <div className={classnames(styles.layout, { [styles.fold]: isNavbar ? false : siderFold }, { [styles.withnavbar]: isNavbar })}>
+  {!isNavbar ? <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
+  <Sider {...siderProps} />
+  </aside> : ''}
+<div className={styles.main}>
+<Header {...headerProps} />
+<Bread {...breadProps} />
+<div className={styles.container}>
+<div className={styles.content}>
+  {hasPermission ? children : <Error />}
+</div>
+  </div>
+  <Footer />
+  </div>
+  </div>
+  </div>
+)
 }
 
 App.propTypes = {
