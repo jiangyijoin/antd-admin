@@ -41,8 +41,8 @@ function Demo ({ demo }) {
 
   const data = [{
     key: '1',
-    name: 'John Brow
-    name: 'Jim Green',n',
+    name: 'John Brow',
+    name: 'Jim Green',
     age: 32,
     address: 'New York No. 1 Lake Park',
   }, {
