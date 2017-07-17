@@ -4,7 +4,9 @@ import { connect } from 'dva'
 import { Row, Col, Card } from 'antd'
 import { Sales, List, Completed} from './components'
 import { color } from 'utils'
-import { Table, DatePicker,Icon,Menu, Dropdown } from 'antd';
+import { routerRedux } from 'dva/router'
+import { Table, DatePicker,Icon} from 'antd';
+import Filter from './Filter'
 
 function Demo ({ demo }) {
   const { sales, completed} = demo
@@ -42,11 +44,11 @@ function Demo ({ demo }) {
   const data = [{
     key: '1',
     name: 'John Brow',
-    name: 'Jim Green',
     age: 32,
     address: 'New York No. 1 Lake Park',
   }, {
     key: '2',
+    name: 'Jim Green',
     age: 42,
     address: 'London No. 1 Lake Park',
   }, {
@@ -55,9 +57,6 @@ function Demo ({ demo }) {
     age: 32,
     address: 'Sidney No. 1 Lake Park',
   }];
-
-  const state = {
-  };
 
   const onClickMenu = function ({ key }) {
     console.log(key);
@@ -77,21 +76,43 @@ function Demo ({ demo }) {
     }
   };
 
-  const menu = (
-    <Menu onClick={onClickMenu}>
-      <Menu.Item key="day">日
-      </Menu.Item>
-      <Menu.Item key="week">周
-      </Menu.Item>
-      <Menu.Item key="month">月
-      </Menu.Item>
-    </Menu>
-  );
-
-  function onChange(date, dateString) {
-    console.log(date, dateString);
+  const filterProps = {
+    filter: {
+      ...location.query,
+    },
+    onFilterChange (value) {
+      dispatch(routerRedux.push({
+        pathname: location.pathname,
+        query: {
+          ...value,
+          page: 1,
+          pageSize,
+        },
+      }))
+    },
+    onSearch (fieldsValue) {
+      fieldsValue.keyword.length ? dispatch(routerRedux.push({
+        pathname: '/user',
+        query: {
+          field: fieldsValue.field,
+          keyword: fieldsValue.keyword,
+        },
+      })) : dispatch(routerRedux.push({
+        pathname: '/user',
+      }))
+    },
+    onAdd () {
+      dispatch({
+        type: 'user/showModal',
+        payload: {
+          modalType: 'create',
+        },
+      })
+    },
+    switchIsMotion () {
+      dispatch({ type: 'user/switchIsMotion' })
+    },
   }
-
 
   return (
       <Row gutter={24}>
@@ -99,17 +120,7 @@ function Demo ({ demo }) {
           <Card bordered={false} bodyStyle={{
                 padding: '24px 36px 24px 0',
               }}>
-                <Dropdown overlay={menu}>
-                  <a className="ant-dropdown-link">
-                    Hover me <Icon type="down" />
-              </a>
-            </Dropdown>
-            <DatePicker id='day_id' style={{
-
-            }} onChange={onChange} />
-            <MonthPicker id='month_id' style={{
-              display:'none'
-            }} onChange={onChange} />
+            <Filter {...filterProps} />
           </Card>
         </Col>
         <Col lg={24} md={24}>
