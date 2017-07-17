@@ -5,7 +5,7 @@ import { Row, Col, Card } from 'antd'
 import { Sales, List, Completed} from './components'
 import { color } from 'utils'
 import { routerRedux } from 'dva/router'
-import { Table, DatePicker,Icon} from 'antd';
+import { Table, DatePicker,Icon,Select} from 'antd';
 import Filter from './Filter'
 
 function Demo ({ demo }) {
@@ -58,24 +58,6 @@ function Demo ({ demo }) {
     address: 'Sidney No. 1 Lake Park',
   }];
 
-  const onClickMenu = function ({ key }) {
-    console.log(key);
-    if(key=='day'){
-      let day = document.getElementById('day_id');
-      console.log(day);
-      day.style.display = 'block';
-      let month = document.getElementById('month_id');
-      month.style.display = 'none';
-    }else if(key=='week'){
-    }else{
-      let day = document.getElementById('day_id');
-      console.log(day);
-      day.style.display = 'none';
-      let month = document.getElementById('month_id');
-      month.style.display = 'block';
-    }
-  };
-
   const filterProps = {
     filter: {
       ...location.query,
@@ -114,8 +96,88 @@ function Demo ({ demo }) {
     },
   }
 
+  const provinceData = ['Zhejiang', 'Jiangsu'];
+  const cityData = {
+    Zhejiang: ['Hangzhou', 'Ningbo', 'Wenzhou'],
+    Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang'],
+  };
+
+  class App extends React.Component {
+    state = {
+      cities: cityData[provinceData[0]],
+      secondCity: cityData[provinceData[0]][0],
+    }
+    handleProvinceChange = (value) => {
+      this.setState({
+        cities: cityData[value],
+        secondCity: cityData[value][0],
+      });
+    }
+    onSecondCityChange = (value) => {
+      this.setState({
+        secondCity: value,
+      });
+    }
+    render() {
+      const provinceOptions = provinceData.map(province => <Option key={province}>{province}</Option>);
+      const cityOptions = this.state.cities.map(city => <Option key={city}>{city}</Option>);
+      return (
+        <div>
+          <Select defaultValue={provinceData[0]} style={{ width: 90 }} onChange={this.handleProvinceChange}>
+            {provinceOptions}
+          </Select>
+          <Select value={this.state.secondCity} style={{ width: 90 }} onChange={this.onSecondCityChange}>
+            {cityOptions}
+          </Select>
+        </div>
+      );
+    }
+  }
+
+  class App1 extends React.Component {
+    state = {
+      o: 'inline-block',
+      p: 'none',
+    }
+    handleChange = (value) => {
+      if(value=='日'){
+        this.setState({
+          o:'inline-block',
+          p:'none'
+        });
+      }else{
+        this.setState({
+          o:'none',
+          p:'inline-block'
+        });
+      }
+    }
+    render() {
+      return (
+        <div>
+          <Select defaultValue="日" style={{ width: 120 }} onChange={this.handleChange}>
+            <Option value="日">日</Option>
+            <Option value="月">月</Option>
+          </Select>
+          <DatePicker style={{width: 120,display:this.state.o}}/>
+          <MonthPicker style={{width: 120,display:this.state.p}} />
+        </div>
+      );
+    }
+  }
+
+
+
   return (
       <Row gutter={24}>
+        <Col lg={24} md={24}>
+          <Card bordered={false} bodyStyle={{
+            padding: '24px 36px 24px 0',
+          }}>
+            <App1 />
+            <App />
+          </Card>
+        </Col>
         <Col lg={24} md={24}>
           <Card bordered={false} bodyStyle={{
                 padding: '24px 36px 24px 0',
